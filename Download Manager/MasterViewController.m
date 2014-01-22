@@ -78,10 +78,6 @@
     for (NSString *urlString in urlStrings)
     {
         NSString *downloadFilename = [downloadFolder stringByAppendingPathComponent:[urlString lastPathComponent]];
-      
-        if ( [ self fileAlreadyExist:downloadFilename ] )
-          continue;
-      
         NSURL *url = [NSURL URLWithString:urlString];
         
         [self.downloadManager addDownloadWithFilename:downloadFilename URL:url];
@@ -93,12 +89,6 @@
     self.startDate = [NSDate date];
     
     [self.downloadManager start];
-}
-
-- (BOOL) fileAlreadyExist:(NSString*)filePath
-{
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-  return [fileManager fileExistsAtPath:filePath];
 }
 
 

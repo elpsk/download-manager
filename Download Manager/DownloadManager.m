@@ -50,6 +50,9 @@
 
 - (void)addDownloadWithFilename:(NSString *)filename URL:(NSURL *)url
 {
+    if ( [ self fileAlreadyExist:filename ] )
+      return;
+
     Download *download = [[Download alloc] initWithFilename:filename URL:url delegate:self];
     
     [self.downloads addObject:download];
@@ -175,5 +178,12 @@
     
     return activeDownloadCount;
 }
+
+- (BOOL) fileAlreadyExist:(NSString*)filePath
+{
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  return [fileManager fileExistsAtPath:filePath];
+}
+
 
 @end
