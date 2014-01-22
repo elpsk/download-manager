@@ -55,12 +55,19 @@
 #warning replace URLs with the names of the files and the URL you want to download them from
 
     // an array of files to be downloaded
-    
-    NSArray *urlStrings = @[@"http://www.yourwebsitehere.com/test/file1.pdf",
-                            @"http://www.yourwebsitehere.com/test/file2.pdf",
-                            @"http://www.yourwebsitehere.com/test/file3.pdf",
-                            @"http://www.yourwebsitehere.com/test/file4.pdf"];
-    
+
+    NSSet *urlStrings = [ NSSet setWithObjects:
+                         @"https://dl.dropboxusercontent.com/u/11796049/BIGFILEs/bigFile01.dat",
+                         @"https://dl.dropboxusercontent.com/u/11796049/BIGFILEs/bigFile02.dat",
+                         @"https://dl.dropboxusercontent.com/u/11796049/BIGFILEs/bigFile01.dat",
+                         @"https://dl.dropboxusercontent.com/u/11796049/BIGFILEs/bigFile03.dat",
+                         @"https://dl.dropboxusercontent.com/u/11796049/BIGFILEs/bigFile02.dat",
+                         @"https://dl.dropboxusercontent.com/u/11796049/BIGFILEs/bigFile01.dat",
+                         @"https://dl.dropboxusercontent.com/u/11796049/BIGFILEs/bigFile02.dat",
+                         @"https://dl.dropboxusercontent.com/u/11796049/BIGFILEs/bigFile01.dat",
+                         @"https://dl.dropboxusercontent.com/u/11796049/BIGFILEs/bigFile03.dat",
+                         nil ];
+  
     // create download manager instance
     
     self.downloadManager = [[DownloadManager alloc] initWithDelegate:self];
@@ -71,6 +78,10 @@
     for (NSString *urlString in urlStrings)
     {
         NSString *downloadFilename = [downloadFolder stringByAppendingPathComponent:[urlString lastPathComponent]];
+      
+        if ( [ self fileAlreadyExist:downloadFilename ] )
+          continue;
+      
         NSURL *url = [NSURL URLWithString:urlString];
         
         [self.downloadManager addDownloadWithFilename:downloadFilename URL:url];
@@ -83,6 +94,13 @@
     
     [self.downloadManager start];
 }
+
+- (BOOL) fileAlreadyExist:(NSString*)filePath
+{
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  return [fileManager fileExistsAtPath:filePath];
+}
+
 
 #pragma mark - DownloadManager Delegate Methods
 
